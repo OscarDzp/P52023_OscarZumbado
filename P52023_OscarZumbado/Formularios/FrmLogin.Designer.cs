@@ -36,7 +36,7 @@
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.BtnCerrar = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.BtnVer = new System.Windows.Forms.Button();
+            this.BtnVerContrasennia = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -64,17 +64,19 @@
             // 
             // TxtUsuario
             // 
+            this.TxtUsuario.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TxtUsuario.Location = new System.Drawing.Point(66, 258);
             this.TxtUsuario.Name = "TxtUsuario";
-            this.TxtUsuario.Size = new System.Drawing.Size(322, 20);
+            this.TxtUsuario.Size = new System.Drawing.Size(322, 26);
             this.TxtUsuario.TabIndex = 2;
             this.TxtUsuario.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // TxtContrasennia
             // 
+            this.TxtContrasennia.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TxtContrasennia.Location = new System.Drawing.Point(66, 336);
             this.TxtContrasennia.Name = "TxtContrasennia";
-            this.TxtContrasennia.Size = new System.Drawing.Size(322, 20);
+            this.TxtContrasennia.Size = new System.Drawing.Size(322, 26);
             this.TxtContrasennia.TabIndex = 3;
             this.TxtContrasennia.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.TxtContrasennia.UseSystemPasswordChar = true;
@@ -82,6 +84,8 @@
             // BtnIngresar
             // 
             this.BtnIngresar.BackColor = System.Drawing.Color.Lime;
+            this.BtnIngresar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnIngresar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BtnIngresar.Location = new System.Drawing.Point(83, 431);
             this.BtnIngresar.Name = "BtnIngresar";
             this.BtnIngresar.Size = new System.Drawing.Size(106, 49);
@@ -93,48 +97,60 @@
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
+            this.linkLabel1.LinkColor = System.Drawing.Color.Black;
             this.linkLabel1.Location = new System.Drawing.Point(322, 371);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(114, 13);
+            this.linkLabel1.Size = new System.Drawing.Size(106, 13);
             this.linkLabel1.TabIndex = 6;
             this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "Olvide mi contrasennia";
+            this.linkLabel1.Text = "Olvide mi contraseña";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // BtnCerrar
             // 
             this.BtnCerrar.BackColor = System.Drawing.Color.Red;
+            this.BtnCerrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnCerrar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BtnCerrar.Location = new System.Drawing.Point(250, 431);
             this.BtnCerrar.Name = "BtnCerrar";
             this.BtnCerrar.Size = new System.Drawing.Size(106, 49);
             this.BtnCerrar.TabIndex = 7;
             this.BtnCerrar.Text = "Cerrar";
             this.BtnCerrar.UseVisualStyleBackColor = false;
+            this.BtnCerrar.Click += new System.EventHandler(this.BtnCerrar_Click);
             // 
             // pictureBox1
             // 
+            this.pictureBox1.Image = global::P52023_OscarZumbado.Properties.Resources.c75e674590b8947542c809924df30bbef2190341163dd08668e243c266be70c5_product_card_v2_mobile_slider_639;
             this.pictureBox1.Location = new System.Drawing.Point(45, 23);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(370, 160);
+            this.pictureBox1.Size = new System.Drawing.Size(370, 186);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 8;
             this.pictureBox1.TabStop = false;
             // 
-            // BtnVer
+            // BtnVerContrasennia
             // 
-            this.BtnVer.Location = new System.Drawing.Point(398, 332);
-            this.BtnVer.Name = "BtnVer";
-            this.BtnVer.Size = new System.Drawing.Size(38, 26);
-            this.BtnVer.TabIndex = 9;
-            this.BtnVer.Text = "Ver";
-            this.BtnVer.UseVisualStyleBackColor = true;
+            this.BtnVerContrasennia.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.BtnVerContrasennia.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnVerContrasennia.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnVerContrasennia.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.BtnVerContrasennia.Location = new System.Drawing.Point(394, 337);
+            this.BtnVerContrasennia.Name = "BtnVerContrasennia";
+            this.BtnVerContrasennia.Size = new System.Drawing.Size(38, 26);
+            this.BtnVerContrasennia.TabIndex = 9;
+            this.BtnVerContrasennia.Text = "Ver";
+            this.BtnVerContrasennia.UseVisualStyleBackColor = false;
+            this.BtnVerContrasennia.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BtnVerContrasennia_MouseDown);
+            this.BtnVerContrasennia.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BtnVerContrasennia_MouseUp);
             // 
             // FrmLogin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Fuchsia;
+            this.BackColor = System.Drawing.Color.Cyan;
             this.ClientSize = new System.Drawing.Size(437, 534);
-            this.Controls.Add(this.BtnVer);
+            this.Controls.Add(this.BtnVerContrasennia);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.BtnCerrar);
             this.Controls.Add(this.linkLabel1);
@@ -143,8 +159,10 @@
             this.Controls.Add(this.TxtUsuario);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "FrmLogin";
-            this.Text = "FrmLogin";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Login";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -161,6 +179,6 @@
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Button BtnCerrar;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Button BtnVer;
+        private System.Windows.Forms.Button BtnVerContrasennia;
     }
 }

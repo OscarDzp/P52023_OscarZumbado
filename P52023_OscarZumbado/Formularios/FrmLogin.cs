@@ -36,5 +36,20 @@ namespace P52023_OscarZumbado.Formularios
         {
 
         }
+
+        private void BtnVerContrasennia_MouseDown(object sender, MouseEventArgs e)
+        {
+            TxtContrasennia.UseSystemPasswordChar = false;
+        }
+
+        private void BtnVerContrasennia_MouseUp(object sender, MouseEventArgs e)
+        {
+            TxtContrasennia.UseSystemPasswordChar=true;
+        }
+
+        private void BtnCerrar_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }
