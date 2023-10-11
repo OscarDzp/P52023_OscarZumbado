@@ -35,8 +35,8 @@
             this.BtnIngresar = new System.Windows.Forms.Button();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.BtnCerrar = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.BtnVerContrasennia = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -92,7 +92,7 @@
             this.BtnIngresar.TabIndex = 4;
             this.BtnIngresar.Text = "Ingresar";
             this.BtnIngresar.UseVisualStyleBackColor = false;
-            this.BtnIngresar.Click += new System.EventHandler(this.button1_Click);
+            this.BtnIngresar.Click += new System.EventHandler(this.BtnIngresar_Click);
             // 
             // linkLabel1
             // 
@@ -119,16 +119,6 @@
             this.BtnCerrar.UseVisualStyleBackColor = false;
             this.BtnCerrar.Click += new System.EventHandler(this.BtnCerrar_Click);
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::P52023_OscarZumbado.Properties.Resources.c75e674590b8947542c809924df30bbef2190341163dd08668e243c266be70c5_product_card_v2_mobile_slider_639;
-            this.pictureBox1.Location = new System.Drawing.Point(45, 23);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(370, 186);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 8;
-            this.pictureBox1.TabStop = false;
-            // 
             // BtnVerContrasennia
             // 
             this.BtnVerContrasennia.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
@@ -143,6 +133,16 @@
             this.BtnVerContrasennia.UseVisualStyleBackColor = false;
             this.BtnVerContrasennia.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BtnVerContrasennia_MouseDown);
             this.BtnVerContrasennia.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BtnVerContrasennia_MouseUp);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::P52023_OscarZumbado.Properties.Resources._1;
+            this.pictureBox1.Location = new System.Drawing.Point(137, 31);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(186, 178);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 8;
+            this.pictureBox1.TabStop = false;
             // 
             // FrmLogin
             // 

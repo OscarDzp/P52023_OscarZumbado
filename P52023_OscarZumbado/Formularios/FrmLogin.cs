@@ -24,7 +24,8 @@ namespace P52023_OscarZumbado.Formularios
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            Globales.ObjectosGlobales.MiFormularioPrincipal.Show();
+            this.Hide();
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -50,6 +51,12 @@ namespace P52023_OscarZumbado.Formularios
         private void BtnCerrar_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void BtnIngresar_Click(object sender, EventArgs e)
+        {
+            Globales.ObjectosGlobales.MiFormularioPrincipal.Show();
+            this.Hide();
         }
     }
 }
