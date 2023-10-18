@@ -20,7 +20,10 @@ namespace Logica.Models
         public DataTable Listar()
         {
             DataTable R = new DataTable();
-            //aca es donde viene la progra funcional para relizar el listar
+         
+            Conexion MiCnn = new Conexion();
+            R = MiCnn.EjecutarSelect("SPUsuariosRolListar");
+
             return R;
         }
     }

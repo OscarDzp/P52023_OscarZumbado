@@ -42,6 +42,21 @@ namespace Logica.Models
         {
             bool R = false;
 
+            Conexion MiCnn = new Conexion();
+
+
+            //Ahora agregamos todos los parametros que solicuita el sp de agregar
+
+            MiCnn.ListaDeParametros.Add(new SqlParameter("@Cedula", this.Cedula));
+            MiCnn.ListaDeParametros.Add(new SqlParameter("@Nombre", this.Nombre));
+            MiCnn.ListaDeParametros.Add(new SqlParameter("@Correo", this.Correo));
+            MiCnn.ListaDeParametros.Add(new SqlParameter("@Contrasennia", this.Contrasennia));
+            MiCnn.ListaDeParametros.Add(new SqlParameter("@Telefono", this.Telefono));
+            MiCnn.ListaDeParametros.Add(new SqlParameter("@Direccion", this.Direccion));
+            MiCnn.ListaDeParametros.Add(new SqlParameter("@UsuarioRolID", this.MiUsuarioRol.UsuarioRolID));
+
+            int resultado = MiCnn.EjecutarDML("SPUsuariosAgregar");
+            if (resultado > 0) R = true;
 
             return R;
         }
@@ -70,18 +85,26 @@ namespace Logica.Models
             return R;
         }
 
-        public bool ConsultaPorCedula(string Cedula)
+        public bool ConsultaPorCedula(string pCedula)
         {
             bool R = false;
 
-
+            Conexion MiCnn = new Conexion();
+            MiCnn.ListaDeParametros.Add(new SqlParameter("@Cedula", pCedula));
+                DataTable dt = new DataTable();
+            dt = MiCnn.EjecutarSelect("SPUsuarioConsultarPorCedula");
+            if (dt != null && dt.Rows.Count > 0 ) R = true;
             return R;
         }
 
-        public bool ConsultaPorCorreo(string Correo)
+        public bool ConsultaPorCorreo(string pCorreo)
         {
             bool R = false;
-
+            Conexion MiCnn = new Conexion();
+            MiCnn.ListaDeParametros.Add(new SqlParameter("@Correo", pCorreo));
+            DataTable dt = new DataTable();
+            dt = MiCnn.EjecutarSelect("SPUsuarioConsultarPorCorreo");
+            if (dt != null && dt.Rows.Count > 0) R = true;
 
             return R;
         }
