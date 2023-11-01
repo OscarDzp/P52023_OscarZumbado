@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace P52023_OscarZumbado.Formularios
@@ -34,6 +28,8 @@ namespace P52023_OscarZumbado.Formularios
             CargarComboRolesDeUsuario();
 
             CargarListaUsuarios();
+
+            ActivarBotonAgregar();
         }
 
         private void CargarComboRolesDeUsuario()
@@ -69,18 +65,42 @@ namespace P52023_OscarZumbado.Formularios
             DgvListaUsuarios.DataSource = lista;
         }
 
-        private bool ValidarDatosRequeridos()
+        private bool ValidarDatosRequeridos(bool OmitirContrasenia = false)
         {
             //validar que se hayan digitado valores en los campos obligatorios
             bool R = false;
             if (!string.IsNullOrEmpty(TxtUsuarioCedula.Text.Trim()) &&
                 !string.IsNullOrEmpty(TxtUsuarioNombre.Text.Trim()) &&
                 !string.IsNullOrEmpty(TxtUsuarioCorreo.Text.Trim()) &&
-                !string.IsNullOrEmpty(TxtUsuarioContrasennia.Text.Trim()) &&
+
                 CboxUsuarioTipoRol.SelectedIndex > -1
                 )
             {
-                R = true;
+                if (OmitirContrasenia)
+                {
+                    //si se omite la contrase;a entonces se pasa a true 
+                    R = true;
+                }
+                else
+                {
+                    //si no se omite la contrasela debemos validar tambien ese campo
+
+
+                    if (!string.IsNullOrEmpty(TxtUsuarioContrasennia.Text.Trim()))
+                    {
+                        R = true;
+
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(TxtUsuarioContrasennia.Text.Trim()))
+                        {
+
+                            MessageBox.Show("Debe digitar la contraseña", "Error de validacion", MessageBoxButtons.OK);
+                            return false;
+                        }
+                    }
+                }
             }
             else
             {
@@ -105,12 +125,7 @@ namespace P52023_OscarZumbado.Formularios
                     return false;
                 }
 
-                if (string.IsNullOrEmpty(TxtUsuarioContrasennia.Text.Trim()))
-                {
 
-                    MessageBox.Show("Debe digitar la contraseña", "Error de validacion", MessageBoxButtons.OK);
-                    return false;
-                }
 
                 if (CboxUsuarioTipoRol.SelectedIndex == -1)
                 {
@@ -209,6 +224,114 @@ namespace P52023_OscarZumbado.Formularios
             CboxUsuarioTipoRol.SelectedIndex = -1;
 
             CbUsuarioActivo.Checked = false;
+        }
+
+        private void DgvListaUsuarios_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            //validamos que se haya selececionado una linea de DGV, u que sea solo una
+            if (DgvListaUsuarios.SelectedRows.Count == 1)
+            {
+                LimpiarForm();
+                //ColUsuarioID
+                //Como necesito consultar por el id del usuario se debe extraer el valor de la columna
+                //correspodiente del DGV, en este caso "ColUsuarioID"
+                DataGridViewRow MiDgvFila = DgvListaUsuarios.SelectedRows[0];
+                int IDUsuario = Convert.ToInt32(MiDgvFila.Cells["ColUsuarioID"].Value);
+                MiUsuarioLocal = new Logica.Models.Usuario();
+                MiUsuarioLocal = MiUsuarioLocal.ConsultarPorID(IDUsuario);
+
+                if (MiUsuarioLocal != null && MiUsuarioLocal.UsuarioID > 0)
+                {
+                    //una vez que se ha asegurado que eixte el usuario y que tiene datos se "Dibujan" eso
+                    //Datos en los controles correspodientes del formulario
+
+                    TxtUsuarioCodigo.Text = MiUsuarioLocal.UsuarioID.ToString();
+                    TxtUsuarioCedula.Text = MiUsuarioLocal.Cedula;
+                    TxtUsuarioNombre.Text = MiUsuarioLocal.Nombre;
+                    TxtUsuarioCorreo.Text = MiUsuarioLocal.Correo;
+                    TxtUsuarioTelefono.Text = MiUsuarioLocal.Telefono;
+                    TxtUsuarioDireccion.Text = MiUsuarioLocal.Direccion;
+
+
+                    //en este caso no quiere que se muestre la contrase;a ya que esta encriptada y no se
+                    //requiere actuzalizar y se deja en blanco el camp texto
+
+                    CboxUsuarioTipoRol.SelectedValue = MiUsuarioLocal.MiUsuarioRol.UsuarioRolID;
+                    CbUsuarioActivo.Checked = MiUsuarioLocal.Activo;
+
+                    ActivarBotonesModificarYEliminar();
+                }
+            }
+        }
+
+        private void BtnLimpiar_Click(object sender, EventArgs e)
+        {
+            LimpiarForm();
+            ActivarBotonAgregar();
+        }
+
+        private void ActivarBotonAgregar()
+        {
+            BtnAgregar.Enabled = true;
+            BtnModificar.Enabled = false;
+            BtnEliminar.Enabled = false;
+        }
+
+        private void ActivarBotonesModificarYEliminar()
+        {
+            BtnAgregar.Enabled = false;
+            BtnModificar.Enabled = true;
+            BtnEliminar.Enabled = true;
+        }
+
+        private void DgvListaUsuarios_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            //esto limpia la seleccion de fila automatica que es el comporamiento estandar del control
+            DgvListaUsuarios.ClearSelection();
+        }
+
+        private void BtnModificar_Click(object sender, EventArgs e)
+        {
+            //al igual que con el agregar , se deben validar los datos requeridos pero,
+            //el cmapo de la contrase;a debe ser opcional en este caso
+
+            if (ValidarDatosRequeridos(true))
+            {
+                //transferimos al objecto local los posibles cambios que se hayan hecho en los datos delusuario
+                MiUsuarioLocal.Nombre = TxtUsuarioNombre.Text.Trim();
+                MiUsuarioLocal.Cedula = TxtUsuarioCedula.Text.Trim();
+                MiUsuarioLocal.Correo = TxtUsuarioCorreo.Text.Trim();
+                MiUsuarioLocal.Telefono = TxtUsuarioTelefono.Text.Trim();
+                MiUsuarioLocal.MiUsuarioRol.UsuarioRolID = Convert.ToInt32(CboxUsuarioTipoRol.SelectedValue);
+                MiUsuarioLocal.Direccion = TxtUsuarioDireccion.Text.Trim();
+
+                //depenmde de si digito o no una transe;a habran dos distitntos UPDATE en los SPs
+                MiUsuarioLocal.Contrasennia = TxtUsuarioContrasennia.Text.Trim();
+
+                //en el diagrama expandido de casos de uso para el tema usuario se indica
+
+                //que para modificar o eliminar primero se debe consultar por el id
+                if (MiUsuarioLocal.ConsultarPorID())
+                {
+                    DialogResult Resp = MessageBox.Show("Desea modificar el usuario?", "???", MessageBoxButtons.YesNo);
+                    if (Resp == DialogResult.Yes)
+                    {
+                        if (MiUsuarioLocal.Actualizar())
+                        {
+                            MessageBox.Show("Usuario modificado correctamenete !", ":)", MessageBoxButtons.OK);
+                            LimpiarForm();
+                            CargarListaUsuarios();
+                            ActivarBotonAgregar();
+
+                        }
+
+
+
+                    }
+                    //preceedemos a modificar el registro del usuario
+
+                }
+            }
         }
     }
 }
