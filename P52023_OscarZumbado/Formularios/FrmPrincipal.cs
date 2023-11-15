@@ -41,5 +41,41 @@ namespace P52023_OscarZumbado.Formularios
         {
             Application.Exit();
         }
+
+        private void FrmPrincipal_Load(object sender, EventArgs e)
+        {
+            LblUsuario.Text = Globales.ObjectosGlobales.MiUsuarioGlobal.Nombre + "(" +
+                Globales.ObjectosGlobales.MiUsuarioGlobal.MiUsuarioRol.Rol + ")";
+            //ahora se debe ajustar los permisos de menus para que se muestren o no, dependiendo
+            //del tipo de rol
+            switch(Globales.ObjectosGlobales.MiUsuarioGlobal.MiUsuarioRol.UsuarioRolID)
+            {
+                //ADMIN
+                case 1:
+                    //Como admin tiene acceso a todo, no es necesario ocultar opciones
+                    break;
+
+                    //EMPLEADO
+                    case 2:
+                    //ocultan los menus correspodientes
+                    MnuGestionUsuarios.Enabled = false;
+                    MnuGestionProductos.Enabled = false;
+                    MnuGestionCategorias.Enabled = false;
+
+                    break;
+                default:
+                    break; 
+               
+            }
+        }
+
+        private void entradasYSalidaDeInventarioToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!Globales.ObjectosGlobales.MiFormularioMovimientos.Visible)
+            {
+                Globales.ObjectosGlobales.MiFormularioMovimientos = new FrmMovimientosinventario();
+                Globales.ObjectosGlobales.MiFormularioMovimientos.Show();
+            }
+        }
     }
 }

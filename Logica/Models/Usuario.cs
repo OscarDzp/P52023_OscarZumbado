@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
+using Logica.Tools;
 
 namespace Logica.Models
 {
@@ -17,20 +18,13 @@ namespace Logica.Models
         }
 
         public int UsuarioID { get; set; }
-
         public string Cedula { get; set; }
-
         public string Nombre { get; set; }
         public string Correo { get; set; }
-
         public string Contrasennia { get; set; }
-
         public string Telefono { get; set; }
-
         public string Tipo { get; set; }
-
         public string Direccion { get; set; }
-
         public bool Activo { get; set; }
 
         public UsuarioRol MiUsuarioRol { get; set; }
@@ -97,7 +91,23 @@ namespace Logica.Models
         public bool Eliminar()
         {
             bool R = false;
+            Conexion MiCnn = new Conexion();
+            MiCnn.ListaDeParametros.Add(new SqlParameter("@ID", this.UsuarioID));
 
+            int resultado = MiCnn.EjecutarDML("SPUsuariosEliminar");
+            if ( resultado > 0 ) R = true;
+
+            return R;
+        }
+
+        public bool Activar()
+        {
+            bool R = false;
+            Conexion MiCnn = new Conexion();
+            MiCnn.ListaDeParametros.Add(new SqlParameter("@ID", this.UsuarioID));
+
+            int resultado = MiCnn.EjecutarDML("SPUsuariosActivar");
+            if (resultado > 0) R = true;
 
             return R;
         }
@@ -178,7 +188,7 @@ namespace Logica.Models
             return R;
         }
 
-        public DataTable ListarActivos() 
+        public DataTable ListarActivos(string pFiltro = "") 
         {
         DataTable R = new DataTable();  
 
@@ -187,15 +197,49 @@ namespace Logica.Models
             Conexion MiCnn = new Conexion();
             //como el Sp para listar requiere un parametro , hay que agregarlo a la lista
             MiCnn.ListaDeParametros.Add(new SqlParameter("@VerActivos", true));
+            MiCnn.ListaDeParametros.Add(new SqlParameter("@Filtro", pFiltro));
+
             R = MiCnn.EjecutarSelect("SPUsuariosListar");
+
             return R;   
         }
 
-        public DataTable ListarInactivos()
+        public DataTable ListarInactivos(string pFiltro = "")
         {
             DataTable R = new DataTable();
+            //hay que hacer instancia de la clase conexion
+
+            Conexion MiCnn = new Conexion();
+            //como el Sp para listar requiere un parametro , hay que agregarlo a la lista
+            MiCnn.ListaDeParametros.Add(new SqlParameter("@VerActivos", false));
+            MiCnn.ListaDeParametros.Add(new SqlParameter("@Filtro", pFiltro));
+
+            R = MiCnn.EjecutarSelect("SPUsuariosListar");
 
             return R;
+        }
+
+        public int ValidarIngreso(string pUsuario, string pContrasennia)
+        {
+            int R = 0;
+            Conexion myCnn = new Conexion();
+            Crypto myEncriptador = new Crypto();
+            String PasswordEncriptado = myEncriptador.EncriptarEnUnSentido(pContrasennia);
+
+            myCnn.ListaDeParametros.Add(new SqlParameter("@Usuario", pUsuario));
+            myCnn.ListaDeParametros.Add(new SqlParameter("@Contrasennia", PasswordEncriptado));
+
+            DataTable resultado = myCnn.EjecutarSelect("SPUsuariosValidarIngreso");
+
+            if(resultado != null && resultado.Rows.Count >0)
+            {
+                DataRow MiFila = resultado.Rows[0];
+                R = Convert.ToInt32(MiFila["UsuarioID"]);
+
+            }
+            return R;
+
+
         }
     }
 }

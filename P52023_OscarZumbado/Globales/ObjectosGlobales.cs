@@ -13,5 +13,13 @@ namespace P52023_OscarZumbado.Globales
         public static Form MiFormularioPrincipal = new Formularios.FrmPrincipal();
 
         public static Formularios.FrmUsuariosGestion MiFormularioDeGestionDeUsuarios = new Formularios.FrmUsuariosGestion();
+
+        //este sera el usuario valido en el login, tendra un scope global
+        //ent toda la aplicacio
+        public static Logica.Models.Usuario MiUsuarioGlobal = new Logica.Models.Usuario();
+
+        //formulario de movimientos de productos
+        public static Formularios.FrmMovimientosinventario MiFormularioMovimientos = new Formularios.FrmMovimientosinventario();
+
     }
 }
