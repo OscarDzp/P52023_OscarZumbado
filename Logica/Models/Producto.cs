@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.SqlClient;
 
 namespace Logica.Models
 {
@@ -79,6 +80,20 @@ namespace Logica.Models
         public DataTable Listar(bool VerActivos = true)
         {
             DataTable R = new DataTable();
+
+            return R;
+        }
+
+        public DataTable ListarEnMovimientoDetalleProducto(bool VerActivos = true, string Filtro = "")
+        {
+            DataTable R = new DataTable();
+
+            Conexion MyCnn = new Conexion();
+
+            MyCnn.ListaDeParametros.Add(new SqlParameter("@VerActivos", VerActivos));
+            MyCnn.ListaDeParametros.Add(new SqlParameter("@Filtro", Filtro));
+
+            R = MyCnn.EjecutarSelect("SPProductosListar");
 
             return R;
         }

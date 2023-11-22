@@ -65,6 +65,12 @@
     <Compile Include="Formularios\FrmMovimientosinventario.Designer.cs">
       <DependentUpon>FrmMovimientosinventario.cs</DependentUpon>
     </Compile>
+    <Compile Include="Formularios\FrmMoviminetosinventarioDetalleProducto.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\FrmMoviminetosinventarioDetalleProducto.Designer.cs">
+      <DependentUpon>FrmMoviminetosinventarioDetalleProducto.cs</DependentUpon>
+    </Compile>
     <Compile Include="Formularios\FrmPrincipal.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -86,6 +92,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formularios\FrmMovimientosinventario.resx">
       <DependentUpon>FrmMovimientosinventario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\FrmMoviminetosinventarioDetalleProducto.resx">
+      <DependentUpon>FrmMoviminetosinventarioDetalleProducto.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formularios\FrmPrincipal.resx">
       <DependentUpon>FrmPrincipal.cs</DependentUpon>

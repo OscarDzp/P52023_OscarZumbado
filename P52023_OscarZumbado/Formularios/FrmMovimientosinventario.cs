@@ -13,12 +13,15 @@ namespace P52023_OscarZumbado.Formularios
 {
     public partial class FrmMovimientosinventario : Form
     {
-        private Logica.Models.Movimiento MiMovimiento { get; set; }
+        public Logica.Models.Movimiento MiMovimientoLocal { get; set; }
+
+        public DataTable DtListaDetalleProductos { get; set; }
 
         public FrmMovimientosinventario()
         {
             InitializeComponent();
-            MiMovimiento = new Logica.Models.Movimiento();
+            MiMovimientoLocal = new Logica.Models.Movimiento();
+            DtListaDetalleProductos = new DataTable();
         }
 
         private void label4_Click(object sender, EventArgs e)
@@ -35,9 +38,33 @@ namespace P52023_OscarZumbado.Formularios
         {
             MdiParent = Globales.ObjectosGlobales.MiFormularioPrincipal;
             CargarListaMovimientoTipo();
+            LimpiarFormulario();
         }
 
-      
+      private void LimpiarFormulario()
+        {
+            DtpFecha.Value = DateTime.Now.Date;
+            CboxTipoMovimiento.SelectedIndex = -1;
+            TxtAnotaciones.Clear();
+
+            //en este caso particular el datatable que alimenta el dgv
+            //debe tener estructura , pero no datos inicialmente
+            //cosiderando eso, llenaremos el datatable con el esquemas
+            //de la consulta del sp SPMovimientocagardetalle
+            //esto permite tener el dt sin filas, pero con estructuras
+            //que permite agregar filas posteriormente
+
+            DtListaDetalleProductos = MiMovimientoLocal.AsignarEsquemaDelDetalle();
+
+            DgvListaDetalle.DataSource = DtListaDetalleProductos;
+
+            //limpianos los totales
+            LblTotalCosto.Text = "0";
+            LblTotalGranTotal.Text = "0";
+            LblTotalImpuestos.Text = "0";
+            LblTotalSubTotal.Text = "0";
+
+         }
 
         private void CargarListaMovimientoTipo()
         {
@@ -54,6 +81,27 @@ namespace P52023_OscarZumbado.Formularios
 
                 CboxTipoMovimiento.DataSource = dtMovimiento;
                 CboxTipoMovimiento.SelectedIndex = -1;
+            }
+        }
+
+        private void BtnAgregar_Click(object sender, EventArgs e)
+        {
+            // el formulario que muestra la lista de items , se debe mostrar en este
+            //caso particular en formato de dialogo, ya que queremos coratar
+            // temporalemnete el funcionamiento del form actuial, hacer algo en
+            // el otro form y esperar un respuesta
+
+
+            Form FormDetalleProducto = new Formularios.FrmMoviminetosinventarioDetalleProducto();
+
+            DialogResult resp = FormDetalleProducto.ShowDialog();
+
+            if (resp == DialogResult.OK) 
+            {
+            // TODO agregar la nueva linea de detalle
+
+
+
             }
         }
     }
