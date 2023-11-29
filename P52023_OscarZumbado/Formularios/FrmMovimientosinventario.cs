@@ -41,7 +41,7 @@ namespace P52023_OscarZumbado.Formularios
             LimpiarFormulario();
         }
 
-      private void LimpiarFormulario()
+        private void LimpiarFormulario()
         {
             DtpFecha.Value = DateTime.Now.Date;
             CboxTipoMovimiento.SelectedIndex = -1;
@@ -64,7 +64,7 @@ namespace P52023_OscarZumbado.Formularios
             LblTotalImpuestos.Text = "0";
             LblTotalSubTotal.Text = "0";
 
-         }
+        }
 
         private void CargarListaMovimientoTipo()
         {
@@ -96,13 +96,144 @@ namespace P52023_OscarZumbado.Formularios
 
             DialogResult resp = FormDetalleProducto.ShowDialog();
 
-            if (resp == DialogResult.OK) 
+            if (resp == DialogResult.OK)
             {
-            // TODO agregar la nueva linea de detalle
 
+                DgvListaDetalle.DataSource = DtListaDetalleProductos;
+                Totalizar();
+
+            }
+
+
+
+
+        }
+        private void Totalizar()
+        {
+
+            decimal TotalCosto = 0;
+            decimal TotalSubtotal = 0;
+            decimal TotalImpuestos = 0;
+            decimal Total = 0;
+
+            if (DtListaDetalleProductos != null && DtListaDetalleProductos.Rows.Count > 0)
+            {
+                foreach (DataRow item in DtListaDetalleProductos.Rows)
+                {
+                    decimal Cantidad = Convert.ToDecimal(item["CantidadMovimiento"]);
+                    TotalCosto += Convert.ToDecimal(item["Costo"]);
+                    TotalSubtotal += Convert.ToDecimal(item["SubTotal"]) * Cantidad;
+                    TotalImpuestos += Convert.ToDecimal(item["TotalIVa"]) * Cantidad;
+                    Total += TotalSubtotal + TotalImpuestos;
+
+                }
+            }
+
+            LblTotalCosto.Text = string.Format("{0:C2}", TotalCosto);
+            LblTotalSubTotal.Text = string.Format("{0:C2}", TotalSubtotal);
+            LblTotalImpuestos.Text = string.Format("{0:C2}", TotalImpuestos);
+            LblTotalGranTotal.Text = string.Format("{0:C2}", Total);
+
+        }
+
+        private void BtnAplicar_Click(object sender, EventArgs e)
+        {
+            //debemos validar que esten los datos minimos necesarios
+            if (ValidarMovimiento())
+            {
+                // una vez que tenemos los requisitos completos, se procede a "dar forma"
+                // al objecto de moviento local.
+
+                //primero los atributos simples y compuestos del encabezado.
+                //luego a asginacion de los detalles
+                MiMovimientoLocal.Fecha = DtpFecha.Value.Date;
+                MiMovimientoLocal.Anotaciones = TxtAnotaciones.Text.Trim();
+
+                MiMovimientoLocal.MiTipo.MovimientoTipoID = Convert.ToInt32(CboxTipoMovimiento.SelectedValue);
+
+                // a nivel de funcionalidad solo necesitamos el FK o sea ID del tipo,
+                //la parte del texto no es necesario
+
+                MiMovimientoLocal.MiUsuario = Globales.ObjectosGlobales.MiUsuarioGlobal;
+
+
+                //llenar la lista de detalles en el objecto local
+                //del datatable de detalles.
+                TransladarDetalles();
+
+                //ahora que tenemos todo listo, procedemos a agregar el movimiento
+                if(MiMovimientoLocal.Agregar())
+                {
+                    MessageBox.Show("El movimiento se ha agregado correctamente",
+                        ":)", MessageBoxButtons.OK);
+
+                    //TODO : Generar un reporte visual en crystal reports
+                    // se hera en clase reposicion sabado 2 - dic 2023
+
+
+                }
+
+            }
+        }
+
+        private void TransladarDetalles()
+        {
+            foreach (DataRow item in DtListaDetalleProductos.Rows)
+            {
+                //en cada iteracion creamos un nuevo objecto de movimiento detalle que luego
+                //sera agregado a la lista de detalles del objecto local
+
+                Logica.Models.MoviminetoDetalle NuevoDetalle = new Logica.Models.MoviminetoDetalle();
+                NuevoDetalle.CantidadMovimiento = Convert.ToDecimal(item["CantidadMovimiento"]);
+                NuevoDetalle.Costo = Convert.ToDecimal(item["Costo"]);
+                NuevoDetalle.PrecioUnitario = Convert.ToDecimal(item["PrecioUnitario"]);
+                NuevoDetalle.SubTotal = Convert.ToDecimal(item["SubTotal"]);
+                NuevoDetalle.TotalIVA = Convert.ToDecimal(item["TotalIVA"]);
+
+                //atributo compuesto simple
+                NuevoDetalle.MiProducto.ProductoId = Convert.ToInt32(item["ProductoID"]);
+
+                //Agregar el detalle nuevo a la lista del objecto local
+                MiMovimientoLocal.Detalles.Add(NuevoDetalle);
 
 
             }
+        }
+
+        private bool ValidarMovimiento()
+        {
+            bool R = false;
+
+            if (DtpFecha.Value.Date <= DateTime.Now.Date &&
+                CboxTipoMovimiento.SelectedIndex > -1 &&
+                DtListaDetalleProductos.Rows.Count > 0)
+            {
+                R = true;
+            }
+            else
+            {
+                if (DtpFecha.Value.Date > DateTime.Now.Date)
+                {
+                    MessageBox.Show("La fecha del movimiento no puede" +
+                        "Ser superior a la fecha actual", "Error de Validacion",
+                        MessageBoxButtons.OK);
+                    return false;
+                }
+                if (CboxTipoMovimiento.SelectedIndex == -1)
+                {
+                    MessageBox.Show("Debe de seleccionar el tipo de movimiento",
+                      "Error de Validacion", MessageBoxButtons.OK);
+                    return false;
+                }
+                if (DtListaDetalleProductos == null || DtListaDetalleProductos.Rows.Count == 0)
+                {
+                    MessageBox.Show("No se puede procesar un movimiento sin detalles", "Error de validacion", MessageBoxButtons.OK);
+                    return false;
+                }
+
+            }
+
+            return R;
         }
     }
 }

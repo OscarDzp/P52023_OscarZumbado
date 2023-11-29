@@ -16,6 +16,12 @@ namespace Logica.Models
 
         public decimal Costo { get; set; }
 
-        Producto MiProducto { get; set; }
+        public decimal SubTotal { get; set; }
+
+        public decimal TotalIVA { get; set; }
+
+        public decimal PrecioUnitario { get; set; }
+
+        public Producto MiProducto { get; set; }
     }
 }
