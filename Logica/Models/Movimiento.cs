@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
+using CrystalDecisions.CrystalReports.Engine;
+
 
 namespace Logica.Models
 {
@@ -49,7 +51,10 @@ namespace Logica.Models
                 //ESPECIALIZADO
                 IDMovimientoRecienCreado = Convert.ToInt32(RetornoSPAgregar.ToString());
 
-                foreach (var item in this.Detalles)
+                //asiganamos al objecto el ID generado por el sp
+                this.MovimientoId = IDMovimientoRecienCreado;
+
+                foreach (MoviminetoDetalle item in this.Detalles)
                 { 
                     //por cada iteracion en la lista de detalles hacemos un insert en la
                     //tabla de detalles
@@ -126,6 +131,29 @@ namespace Logica.Models
             //Me genere numeros unicos que impidan repetir registros
             R.PrimaryKey = null;
 
+            return R;
+        }
+
+        public ReportDocument Imprimir(ReportDocument document)
+        {
+            ReportDocument R = document;
+            // hacemos un objecto de tipo crystal (la clase que creamos)
+            Tools.Crystal ObjCrystal = new Tools.Crystal(R);
+
+            DataTable datos = new DataTable();
+
+            Conexion MyCnn = new Conexion();
+
+            MyCnn.ListaDeParametros.Add(new SqlParameter("@ID", this.MovimientoId));
+
+            datos = MyCnn.EjecutarSelect("SPMovimientoImprimir");
+
+            if(datos != null && datos.Rows.Count > 0)
+            {
+                ObjCrystal.Datos = datos;
+
+                R = ObjCrystal.GenerarReporte();
+            }
             return R;
         }
 

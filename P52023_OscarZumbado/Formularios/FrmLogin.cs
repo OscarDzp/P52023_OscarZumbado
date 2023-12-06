@@ -94,5 +94,10 @@ namespace P52023_OscarZumbado.Formularios
             Globales.ObjectosGlobales.MiFormularioPrincipal.Show();
             this.Hide();
         }
+
+        private void FrmLogin_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

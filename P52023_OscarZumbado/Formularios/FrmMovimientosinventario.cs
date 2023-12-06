@@ -141,38 +141,57 @@ namespace P52023_OscarZumbado.Formularios
             //debemos validar que esten los datos minimos necesarios
             if (ValidarMovimiento())
             {
-                // una vez que tenemos los requisitos completos, se procede a "dar forma"
-                // al objecto de moviento local.
+                DialogResult respuesta = MessageBox.Show("Dese continuar?", "???", MessageBoxButtons.YesNo);
 
-                //primero los atributos simples y compuestos del encabezado.
-                //luego a asginacion de los detalles
-                MiMovimientoLocal.Fecha = DtpFecha.Value.Date;
-                MiMovimientoLocal.Anotaciones = TxtAnotaciones.Text.Trim();
-
-                MiMovimientoLocal.MiTipo.MovimientoTipoID = Convert.ToInt32(CboxTipoMovimiento.SelectedValue);
-
-                // a nivel de funcionalidad solo necesitamos el FK o sea ID del tipo,
-                //la parte del texto no es necesario
-
-                MiMovimientoLocal.MiUsuario = Globales.ObjectosGlobales.MiUsuarioGlobal;
-
-
-                //llenar la lista de detalles en el objecto local
-                //del datatable de detalles.
-                TransladarDetalles();
-
-                //ahora que tenemos todo listo, procedemos a agregar el movimiento
-                if(MiMovimientoLocal.Agregar())
+                if (respuesta == DialogResult.Yes)
                 {
-                    MessageBox.Show("El movimiento se ha agregado correctamente",
-                        ":)", MessageBoxButtons.OK);
 
-                    //TODO : Generar un reporte visual en crystal reports
-                    // se hera en clase reposicion sabado 2 - dic 2023
+                    // una vez que tenemos los requisitos completos, se procede a "dar forma"
+                    // al objecto de moviento local.
+
+                    //primero los atributos simples y compuestos del encabezado.
+                    //luego a asginacion de los detalles
+                    MiMovimientoLocal.Fecha = DtpFecha.Value.Date;
+                    MiMovimientoLocal.Anotaciones = TxtAnotaciones.Text.Trim();
+
+                    MiMovimientoLocal.MiTipo.MovimientoTipoID = Convert.ToInt32(CboxTipoMovimiento.SelectedValue);
+
+                    // a nivel de funcionalidad solo necesitamos el FK o sea ID del tipo,
+                    //la parte del texto no es necesario
+
+                    MiMovimientoLocal.MiUsuario = Globales.ObjectosGlobales.MiUsuarioGlobal;
 
 
+                    //llenar la lista de detalles en el objecto local
+                    //del datatable de detalles.
+                    TransladarDetalles();
+
+                    //ahora que tenemos todo listo, procedemos a agregar el movimiento
+                    if (MiMovimientoLocal.Agregar())
+                    {
+                        MessageBox.Show("El movimiento se ha agregado correctamente",
+                            ":)", MessageBoxButtons.OK);
+
+                        //GENERAR REPORTE 
+                        //1. Crear un objecto de tipo documento
+                        CrystalDecisions.CrystalReports.Engine.ReportDocument MiReporte = new CrystalDecisions.CrystalReports.Engine.ReportDocument();
+
+                        //2. crear objecto del reporte que se quiere usar
+                        MiReporte = new Reportes.RptMovimiento();
+
+                        //3. llamar a la funcion que extrae los datos de la base de datos
+                        MiReporte = MiMovimientoLocal.Imprimir(MiReporte);
+
+                        //4. dibujar el reporte en pantalla
+                        FrmVisualizadorReportes MiVisualizador = new FrmVisualizadorReportes();
+
+                        MiVisualizador.CrvVisualizador.ReportSource = MiReporte;
+
+                        MiVisualizador.Show();
+
+                        //TODO: Limpiar formulario
+                    }
                 }
-
             }
         }
 
