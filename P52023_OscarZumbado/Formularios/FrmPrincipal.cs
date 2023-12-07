@@ -77,5 +77,15 @@ namespace P52023_OscarZumbado.Formularios
                 Globales.ObjectosGlobales.MiFormularioMovimientos.Show();
             }
         }
+
+        private void MnuGestionProductos_Click(object sender, EventArgs e)
+        {
+            if (!Globales.ObjectosGlobales.MiProductosGestion.Visible)
+
+            {
+                Globales.ObjectosGlobales.MiProductosGestion = new FrmProductosGestion();
+                Globales.ObjectosGlobales.MiProductosGestion.Show();
+            }
+        }
     }
 }

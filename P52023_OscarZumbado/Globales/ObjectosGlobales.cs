@@ -21,5 +21,8 @@ namespace P52023_OscarZumbado.Globales
         //formulario de movimientos de productos
         public static Formularios.FrmMovimientosinventario MiFormularioMovimientos = new Formularios.FrmMovimientosinventario();
 
+        public static Formularios.FrmProductosGestion MiProductosGestion = new Formularios.FrmProductosGestion();
+
+        public static Logica.Models.Producto MiProducto = new Logica.Models.Producto();
     }
 }
